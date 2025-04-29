@@ -1,0 +1,18 @@
+[
+    {
+        "nome": "João Silva",
+        "rede_social": "Instagram",
+        "postagem": "Amei minha nova bike 🚲",
+        "curtidas": 150,
+        "comentarios": 23,
+        "data": "2024-05-01"
+    },
+    {
+        "nome": "Maria Souza",
+        "rede_social": "Facebook",
+        "postagem": "Feliz aniversário para mim 🎉",
+        "curtidas": 300,
+        "comentarios": 50,
+        "data": "2024-04-20"
+    }
+]
