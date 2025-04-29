@@ -7,6 +7,8 @@ import os
 import pytesseract
 from PIL import Image
 import json 
+from flask import Flask, jsonify
+import requests
 
 def validar_texto_com_openrouter(texto_ocr):
     url = "https://openrouter.ai/api/v1/chat/completions"
@@ -66,12 +68,44 @@ def upload_file():
         'cpf_confere': resultado_cpf
     })
     
-@app.route('/social', methods=['GET'])
-def get_social_data():
-    try:
-        with open('social_data.json', 'r', encoding='utf-8') as file:
-            dados = json.load(file)
-        return jsonify(dados)
-    except Exception as e:
-        return jsonify({'error': 'Erro ao ler o arquivo de redes sociais', 'details': str(e)}), 500
+# SEU ACCESS TOKEN AQUI
+ACCESS_TOKEN = 'EAAIZAmiyOmHYBO3N0XNqa6R0cS4x7CnHOb51NaufnLIhxKRDh0J1d1bPqTHH1QwPbc88AoAt26yvnT5MDMhxpmiYULmsGQTqzZBu4hCx5DfKGWpC0sLHCRLV8V1AJ1V16m2d7gOQtYYZBcJwO7gQRDZCDaDqIY4WkRQLMUnPxbs21jiXdWxrjybJaZA3sMk3h142cpyT94mf7wMpNkhUTVDLkihjArYC4ElrdcnGJ4GEYgSTwfxfLd705Oq7ZAPAZDZD'
 
+# Base da API do Facebook
+BASE_URL = 'https://graph.facebook.com/v22.0'
+
+#ID e Nome
+@app.route('/social_real/profile', methods=['GET'])
+def get_profile():
+    url = f"{BASE_URL}/me"
+    params = {
+        'fields': 'id,name',
+        'access_token': ACCESS_TOKEN
+    }
+    response = requests.get(url, params=params)
+    return jsonify(response.json())
+
+# Peginas curtidas
+@app.route('/social_real/likes', methods=['GET'])
+def get_likes():
+    url = f"{BASE_URL}/me/likes"
+    params = {
+        'fields': 'name,category',
+        'access_token': ACCESS_TOKEN
+    }
+    response = requests.get(url, params=params)
+    return jsonify(response.json())
+
+# eventos
+@app.route('/social_real/events', methods=['GET'])
+def get_events():
+    url = f"{BASE_URL}/me/events"
+    params = {
+        'fields': 'name,start_time,end_time',
+        'access_token': ACCESS_TOKEN
+    }
+    response = requests.get(url, params=params)
+    return jsonify(response.json())
+
+if __name__ == '__main__':
+    app.run(debug=True)
