@@ -1,7 +1,8 @@
-import { Register } from './pages/Register'
-import { Analise } from './components/Analise'
-import './App.css'
-import { ValidarLink } from './components/ValidarLink'
+import { Register } from './pages/Register';
+import { Analise } from './components/Analise';
+import { ValidarLink } from './components/ValidarLink';
+import './App.css';
+
 
 function App() {
   return (

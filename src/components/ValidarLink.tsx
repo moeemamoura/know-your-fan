@@ -7,16 +7,6 @@ export function ValidarLink() {
     const [erro, setErro] = useState("");
     const [podeValidar, setPodeValidar] = useState(false);
 
-    function interpretarResposta(resposta: string): "aprovado" | "reprovado" | "indefinido" {
-        const texto = resposta.toLowerCase();
-        if (texto.includes("sim") || texto.includes("relevante") || texto.includes("é relevante")) {
-            return "aprovado";
-        } else if (texto.includes("não") || texto.includes("não é relevante")) {
-            return "reprovado";
-        } else {
-            return "indefinido";
-        }
-    }
 
     async function verificarDadosFacebook() {
         try {
@@ -96,23 +86,11 @@ export function ValidarLink() {
                             </button>
                         </>
                     ) : ( // Se já tem resposta: mostra o resultado
-                        <div className="flex flex-col items-center mt-6">
-                            {interpretarResposta(resposta) === "aprovado" && (
-                                <div className="bg-green-100 text-green-800 font-bold py-2 px-4 rounded-lg mb-4">
-                                    ✅ Perfil Aprovado como Relevante!
-                                </div>
-                            )}
 
-                            {interpretarResposta(resposta) === "reprovado" && (
-                                <div className="bg-red-100 text-red-800 font-bold py-2 px-4 rounded-lg mb-4">
-                                    ❌ Perfil Não é Relevante.
-                                </div>
-                            )}
-
-                            <div className="whitespace-pre-wrap text-gray-700 leading-relaxed text-left border-t pt-4 mt-4">
-                                {resposta}
-                            </div>
+                        <div className="whitespace-pre-wrap text-gray-700 leading-relaxed text-left border-t pt-4 mt-4">
+                            {resposta}
                         </div>
+
                     )}
                 </>
             ) : (

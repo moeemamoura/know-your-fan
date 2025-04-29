@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Input } from "../components/Input";
+import InputMask from "react-input-mask";
 import { Upload } from "../components/Upload";
 
 export function Register() {
@@ -45,12 +46,30 @@ export function Register() {
         }
     }
 
+    function formatarCPF(cpf: string) {
+        return cpf
+            .replace(/\D/g, '') // remove tudo que não for número
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    }
+
+
+
     return (
         <div className="max-w-3xl mx-auto mt-8 p-6 rounded-2xl bg-white shadow-xl border border-gray-200 flex flex-col items-center">
             <h1 className="text-2xl font-bold mb-4">Cadastro do Fã</h1>
             <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-4">
                 <Input placeholder="Nome" value={name} onChange={(e) => setName(e.target.value)} />
-                <Input placeholder="CPF" value={cpf} onChange={(e) => setCpf(e.target.value)} />
+
+                <input
+                    type="text"
+                    value={cpf}
+                    onChange={(e) => setCpf(formatarCPF(e.target.value))}
+                    placeholder="CPF"
+                    className="border p-2 rounded w-full"
+                />
+
                 <Input placeholder="Endereço" value={endereco} onChange={(e) => setEndereco(e.target.value)} />
 
                 <Upload onFileSelect={(file) => setSelectedFile(file)} />

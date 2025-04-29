@@ -1,6 +1,8 @@
-OPENROUTER_API_KEY = "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"
 
-ACCESS_TOKEN = 'EAAIZAmiyOmHYBO8Egvc6rdHGsWCTnW72GZAhalIo9lxfzm5dFUwAUYNXlY2jBPqsQ1M3gDmF32pDN2ZADqYBZA3yJxR8g701xZB2WRupZCOPyZCbVpiuP08PGAjG7FNCZCXweoDMktVZA5Kqps99GHm6ZAZAL4OlPbS3LjUfJbr4wCq5HC5RQMpTlpRkwdpSiT46IipoRSUmFlZA9VijbhEZC3SnsRyPmvxgZA2ZAbqzRvZBO8SdKWcTD2ZAg8CB5fDJHWW94vwZDZD'
+
+OPENROUTER_API_KEY =  "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"
+
+ACCESS_TOKEN = 'EAAIZAmiyOmHYBOxf76Jw7HMCHJ8OnlYlZBPPZCczS4Eoe3sOFZAvF53zyCiRZAPy3rob08p0IY4V7ECuLqh6u2tkxcaN5GsavKpCrie7DlZCqy78LPMijalGDXKShiizBBVf9ZCxVIlSuRfiEqjMib9QfNvfbi4diOeQrjayhciGkuyUPd2OTTX0pdnZBy7Ifswg3jSG7DUEPFbXtRpGarWoWnCWLG67zZAdFLZANG5G6urbqneSpo5uNPvf0G7BWVeQZDZD'
 
 import requests
 from flask import Flask, request, jsonify
@@ -171,6 +173,49 @@ def analisar_perfil():
         "eventos_count": len(lista_eventos),
         "analise": analise_gerada
     })
+    
+@app.route('/validar_link', methods=['POST'])
+def validar_link():
+    data = request.get_json()
+    link = data.get('link', '')
+
+    if not link:
+        return jsonify({'error': 'Link não fornecido'}), 400
+
+    prompt = f"Este é o link informado: {link}. Esse link é relevante para o perfil de um fã de e-sports?"
+
+    headers = {
+        "Authorization": f"Bearer {OPENROUTER_API_KEY.strip()}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "model": "openai/gpt-3.5-turbo",
+        "messages": [
+            {
+                "role": "system",
+                "content": "Você é um assistente especializado em validar links de perfis de fãs de e-sports com base no contexto de interesse do usuário."
+            },
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    }
+
+    try:
+        response = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=payload)
+
+        if response.status_code == 200:
+            data = response.json()
+            return jsonify({"analise": data['choices'][0]['message']['content']})
+        elif response.status_code == 401:
+            return jsonify({"error": "Token do OpenRouter inválido (401)"}), 401
+        else:
+            return jsonify({"error": f"Erro do OpenRouter: {response.status_code}"}), response.status_code
+
+    except Exception as e:
+        return jsonify({"error": f"Erro ao conectar com o OpenRouter: {str(e)}"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

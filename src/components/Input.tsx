@@ -1,3 +1,5 @@
+import React from 'react';
+
 type Props = {
     placeholder: string;
     value?: string;
@@ -10,7 +12,7 @@ export function Input({ placeholder, value, onChange }: Props) {
             placeholder={placeholder}
             value={value}
             onChange={onChange}
-            className="border rounded p-2"
+            className="border rounded p-2 w-full"
         />
     );
 }
