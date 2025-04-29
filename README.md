@@ -89,6 +89,6 @@ python app.py
 
 ## 👩‍💻 Feito por
 
-**Jessica (Moema Moura)**  
+Moema Moura
 Estudante de Sistemas de Informação • Projeto para FURIA  
 🚀 _"Conhecer o fã é o primeiro passo para criar conexões reais!"_
