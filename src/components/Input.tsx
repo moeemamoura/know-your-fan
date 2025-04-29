@@ -10,7 +10,7 @@ export function Input({ placeholder, value, onChange }: Props) {
             placeholder={placeholder}
             value={value}
             onChange={onChange}
-            className="border rounded p-2 w-1/3"
+            className="border rounded p-2"
         />
     );
 }

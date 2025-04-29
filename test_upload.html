@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Know Your Fan - Upload Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload Test Form</h1>
+    <p>Use this form to test the upload functionality and database storage.</p>
+    
+    <form id="uploadForm" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Nome completo:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="cpf">CPF:</label>
+            <input type="text" id="cpf" name="cpf" placeholder="123.456.789-00" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="address">Endereço:</label>
+            <input type="text" id="address" name="address">
+        </div>
+        
+        <div class="form-group">
+            <label for="file">Documento (imagem):</label>
+            <input type="file" id="file" name="file" accept="image/*" required>
+        </div>
+        
+        <button type="submit">Enviar</button>
+    </form>
+    
+    <div id="results" class="results" style="display: none;">
+        <h2>Resultados:</h2>
+        <pre id="responseJson"></pre>
+    </div>
+    
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const resultsDiv = document.getElementById('results');
+            const responseJson = document.getElementById('responseJson');
+            
+            resultsDiv.style.display = 'block';
+            responseJson.textContent = 'Enviando dados...';
+            
+            try {
+                const response = await fetch('http://localhost:5000/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                responseJson.textContent = JSON.stringify(data, null, 2);
+                
+                // Check if ID was returned - indicates db storage success
+                if (data.id_registro) {
+                    responseJson.textContent += '\n\nSUCESSO: Dados salvos no banco com ID: ' + data.id_registro;
+                }
+            } catch (error) {
+                responseJson.textContent = 'Erro: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
+
