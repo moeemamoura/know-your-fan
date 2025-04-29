@@ -1,54 +1,94 @@
-# React + TypeScript + Vite
+# 🎮 Know Your Fan [HARD Challenge]
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projeto desenvolvido como parte de um desafio de experiência conversacional para a FURIA. O objetivo é criar uma solução que colete e valide o máximo de informações sobre um usuário para entender seu perfil como fã de e-sports.
 
-Currently, two official plugins are available:
+## 🧠 Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ✅ **Cadastro do Fã**  
+  Formulário para coleta de dados básicos: nome, CPF e endereço, com máscara no campo de CPF (`react-input-mask`).
 
-## Expanding the ESLint configuration
+- 🖼️ **Upload de Documento com OCR + IA**  
+  - O usuário pode subir uma imagem de documento.
+  - A imagem é processada usando **OCR (Tesseract)** para extrair texto.
+  - A IA (OpenRouter API com GPT-3.5-turbo) valida se nome e CPF conferem com o documento.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- 🤖 **Análise de Perfil via Facebook Graph API**  
+  - Coleta dados como: nome, páginas curtidas e eventos.
+  - A IA interpreta o comportamento do fã com base nesses dados.
+  - Mostra a análise completa do perfil, com uma avaliação se o fã é **relevante ou não** para e-sports.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- 🔗 **Validação de Links de Perfis**  
+  - O usuário cola um link de perfil de e-sports.
+  - A IA avalia se o link está relacionado ao perfil do fã.
+  - Mostra se o link é **aprovado** como relevante.
+
+## 🛠️ Tecnologias e Ferramentas
+
+### Front-end
+- [React + Vite](https://vitejs.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [React Input Mask](https://www.npmjs.com/package/react-input-mask)
+- [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
+
+### Back-end
+- [Python 3 + Flask](https://flask.palletsprojects.com/)
+- [Flask-CORS](https://flask-cors.readthedocs.io/)
+- [Tesseract OCR](https://github.com/tesseract-ocr/tesseract)
+- [Pillow](https://pypi.org/project/Pillow/)
+- [OpenRouter API (GPT-3.5-turbo)](https://openrouter.ai/)
+- [Facebook Graph API](https://developers.facebook.com/docs/graph-api)
+
+## 🧪 Como rodar o projeto
+
+### 🖥️ Front-end
+
+```bash
+# Instale as dependências
+npm install
+
+# Rode o Vite
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### ⚙️ Back-end (Flask)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# Instale as dependências
+pip install flask flask-cors pytesseract pillow requests
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+# Rode o backend
+python app.py
 ```
+
+> **Requisitos**: Python 3, Node.js, Tesseract OCR instalado no sistema (`tesseract --version`)
+
+## 📁 Estrutura do Projeto
+
+```
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── Input.tsx
+│   │   ├── Upload.tsx
+│   │   ├── Analise.tsx
+│   │   └── ValidarLink.tsx
+│   ├── pages/
+│   │   └── Register.tsx
+│   ├── App.tsx
+│   └── main.tsx
+├── uploads/            # Pasta onde o Flask salva imagens
+└── app.py              # Servidor Flask
+```
+
+## 📌 Observações
+
+- O projeto foi pensado para simular uma experiência real de **KYC (Know Your Customer)**, voltado para e-sports.
+- O backend e a IA podem ser facilmente adaptados para outro tipo de análise (ex: validação de perfil para eventos, promoções, patrocínios etc).
+- O app não armazena dados, todas as validações são feitas em tempo real.
+
+## 👩‍💻 Feito por
+
+**Jessica (Moema Moura)**  
+Estudante de Sistemas de Informação • Projeto para FURIA  
+🚀 _"Conhecer o fã é o primeiro passo para criar conexões reais!"_
